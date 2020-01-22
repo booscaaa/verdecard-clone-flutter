@@ -6,7 +6,29 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  PageController controller = PageController(initialPage: 0);
   bool isSwitched = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _startSwitch();
+  }
+
+  _startSwitch() async {
+    await Future.delayed(new Duration(milliseconds: 5000));
+    print(controller.page.toInt());
+    if (controller.page.toInt() == 2) {
+      controller.jumpToPage(0);
+    } else {
+      controller.animateToPage(controller.page.toInt() + 1,
+          duration: Duration(milliseconds: 500), curve: Curves.linear);
+    }
+
+    _startSwitch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +43,22 @@ class _LoginPageState extends State<LoginPage> {
               right: 0,
               child: Opacity(
                   opacity: 0.3,
-                  child: Image.asset(
-                    "images/login.jpg",
-                    fit: BoxFit.fitHeight,
+                  child: PageView(
+                    controller: controller,
+                    children: <Widget>[
+                      Image.asset(
+                        "images/login.jpg",
+                        fit: BoxFit.fitHeight,
+                      ),
+                      Image.asset(
+                        "images/login2.jpg",
+                        fit: BoxFit.fitHeight,
+                      ),
+                      Image.asset(
+                        "images/login3.jpg",
+                        fit: BoxFit.fitHeight,
+                      )
+                    ],
                   ))),
           SafeArea(
               child: Scaffold(
